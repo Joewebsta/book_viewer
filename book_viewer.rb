@@ -18,7 +18,13 @@ get '/chapters/:number' do
   chapter_name = @contents[number - 1]
   @title = "Chapter #{number} - #{chapter_name}"
 
-  @paragraphs = File.read("data/chp#{number}.txt").split("\n\n")
+  @chapter = File.read("data/chp#{number}.txt")
 
   erb :chapter
+end
+
+helpers do
+  def in_paragraphs(text)
+    text.split("\n\n").map { |para| "<p>#{para}</p>" }.join
+  end
 end
