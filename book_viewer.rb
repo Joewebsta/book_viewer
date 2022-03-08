@@ -20,10 +20,20 @@ get '/chapters/:number' do
   redirect '/' unless (1..@contents.size).cover? number
 
   @title = "Chapter #{number}: #{chapter_name}"
-
   @chapter = File.read("data/chp#{number}.txt")
 
   erb :chapter
+end
+
+get '/search' do
+  @query = params[:query]
+
+  @matching_chapter_titles = @contents.filter.with_index do |_, index|
+    chapter = File.read("data/chp#{index + 1}.txt")
+    chapter.include?(@query)
+  end
+
+  erb :search
 end
 
 not_found do
