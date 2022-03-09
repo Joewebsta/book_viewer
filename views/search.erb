@@ -5,12 +5,17 @@
   <button type="submit">Search</button>
 </form>
 
-<h1>Results for '<%= @query %>' </h1>
 
-<ul>
-  <% @matching_chapter_titles.each do |title| %>
-    <li>
-      <a href="chapters/<%= @contents.find_index(title) + 1 %>"><%= title %></a>
-    </li>
+<% if @query %>
+  <% if @results.empty? %>
+    <p>Sorry no matches were found</p>
+  <% else %>
+    <h2 class="content-subhead">Results for '<%= @query %>' </h2>
+
+    <ul>
+      <% @results.each do |chapter| %>
+        <li><a href="chapters/<%= chapter[:number] %>"><%= chapter[:name] %></a></li>
+      <% end %>
+    </ul>
   <% end %>
-</ul>
+<% end %>

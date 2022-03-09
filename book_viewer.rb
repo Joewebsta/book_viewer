@@ -27,12 +27,7 @@ end
 
 get '/search' do
   @query = params[:query]
-
-  @matching_chapter_titles = @contents.filter.with_index do |_, index|
-    chapter = File.read("data/chp#{index + 1}.txt")
-    chapter.include?(@query)
-  end
-
+  @results = matching_chapters(@query)
   erb :search
 end
 
@@ -43,5 +38,25 @@ end
 helpers do
   def in_paragraphs(text)
     text.split("\n\n").map { |para| "<p>#{para}</p>" }.join
+  end
+
+  def each_chapter
+    @contents.each_with_index do |name, index|
+      chap_num = index + 1
+      chapter = File.read("data/chp#{chap_num}.txt")
+      yield name, chap_num, chapter
+    end
+  end
+
+  def matching_chapters(query)
+    results = []
+
+    return results if !query || query.empty?
+
+    each_chapter do |name, number, contents|
+      results << { number: number, name: name } if contents.include?(query)
+    end
+
+    results
   end
 end
