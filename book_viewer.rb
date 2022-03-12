@@ -42,6 +42,11 @@ helpers do
       "<p id='paragraph#{index}'>#{para}</p>"
     end.join
   end
+
+  def strong_query(text, query)
+    strong_query = "<strong>#{query}</strong>"
+    text.gsub(query, strong_query)
+  end
 end
 
 def each_chapter
