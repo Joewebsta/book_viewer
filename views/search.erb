@@ -13,9 +13,20 @@
     <h2 class="content-subhead">Results for '<%= @query %>' </h2>
 
     <ul>
-      <% @results.each do |chapter| %>
-        <li><a href="chapters/<%= chapter[:number] %>"><%= chapter[:name] %></a></li>
-      <% end %>
-    </ul>
+    <% @results.each do |result| %>
+      <li>
+        <h4><%= result[:name] %></h4>
+        <ul>
+          <% result[:paragraphs].each do |index, text| %>
+            <li>
+              <a href="/chapters/<%= result[:number]%>#paragraph<%= index %>">
+                <%= text %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
   <% end %>
 <% end %>
